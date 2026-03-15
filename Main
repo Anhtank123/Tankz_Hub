@@ -1,0 +1,50 @@
+-- =========================================================================
+-- TANKZ MULTI-HUB LOADER
+-- Tự động nhận diện game và tải script tương ứng
+-- =========================================================================
+
+local PlaceId = game.PlaceId
+local CoreGui = game:GetService("CoreGui")
+
+-- [BƯỚC 1: ĐIỀN PLACE ID CỦA GAME VÀO ĐÂY]
+-- Bạn lấy các số này trên thanh địa chỉ web (URL) của trò chơi Roblox
+local SNIPER_ARENA_ID = 122446657157717 -- <-- THAY SỐ NÀY THÀNH PLACE ID CỦA SNIPER ARENA
+local SILENT_ASSASSIN_ID = 103854444055060 -- <-- ĐÂY LÀ ID PHỔ BIẾN CỦA SILENT ASSASSIN (Thay nếu cần)
+
+-- [BƯỚC 2: LOGIC NHẬN DIỆN VÀ THỰC THI SCRIPT]
+if PlaceId == SNIPER_ARENA_ID then
+    print("[Tankz Hub] Sniper Arena detected. Loading data...")
+    
+    -- Tải Script Sniper Arena
+    local success, err = pcall(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Anhtank123/Tankz_Hub_Sniper_Arena/refs/heads/main/Tankz_Hub_obfucated"))()
+    end)
+    
+    if not success then
+        warn("[Tankz Hub] Error loading Sniper Arena Script: " .. tostring(err))
+    end
+
+elseif PlaceId == SILENT_ASSASSIN_ID then
+    print("[Tankz Hub] Silent Assassin detected. Loading data...")
+    
+    -- Tải Script Silent Assassin
+    local success, err = pcall(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Anhtank123/Tankz_Hub_Silient_Assassins/refs/heads/main/script"))()
+    end)
+    
+    if not success then
+        warn("[Tankz Hub] Error loading Silent Assassin Script: " .. tostring(err))
+    end
+
+else
+    -- Nếu người chơi dùng script này trong một game chưa được hỗ trợ
+    print("[Tankz Hub] Unsupported game. (PlaceId: " .. tostring(PlaceId) .. ")")
+    
+    -- Tải tạm thư viện Fluent chỉ để hiển thị thông báo
+    local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+    Fluent:Notify({
+        Title = "Tankz Multi-Hub ⚠️",
+        Content = "This game is not supported yet!\nCurrent Place ID: " .. tostring(PlaceId),
+        Duration = 10
+    })
+end
